@@ -123,6 +123,12 @@ def perform_analysis(data_set,eq,minimum,ID,store,time_step):
 #                                                                                         Main
 #===========================================================================================================================================================================================================
 
+print()
+f = open('stat_ref.txt','r')
+pretext = f.read()
+print(pretext)
+f.close()
+
 parser = argparse.ArgumentParser(description='Use timeseries analysis to compute error and autocorrelation time \n of data sets from MD simulations.\n')
 parser.add_argument('-f'       , dest='infile'      , metavar='NameData'   , type=str,help='name of the data-file\n')
 parser.add_argument('-o'       , dest='outfile'     , type=str ,nargs='*'  ,help='name of output-file, if -append is set multiple data-sets \n can be appended to multiple output-files\n')
@@ -187,6 +193,5 @@ def __main__():
        print(output)
        print('\n')
     return(None)      
-
 
 __main__() 

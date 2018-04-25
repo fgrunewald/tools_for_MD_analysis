@@ -1,0 +1,19 @@
+                                                   this script is based on the work of:
+                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ [1] Shirts MR and Chodera JD. Statistically optimal analysis of samples from multiple equilibrium #states.
+     J. Chem. Phys. 129:124105, 2008
+     http://dx.doi.org/10.1063/1.2978177
+
+ [2] J. D. Chodera, W. C. Swope, J. W. Pitera, C. Seok, and K. A. Dill. Use of the weighted
+     histogram analysis method for the analysis of simulated and parallel tempering simulations.
+     JCTC 3(1):26-41, 2007.
+ 
+ [3] J.D Chodera, A Simple Method for Automated Equilibration Detection in Molecular Simulations
+     J. Chem. Theory Comput., 2016, 12 (4), pp 1799–1805 10.1021/acs.jctc.5b00784
+
+ [4] F. Grunewald, G. Rossi, A. H. de Vries, S. J. Marrink, L. Monticelli, A transferable MARTINI model of PEO, in preparation
+
+                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

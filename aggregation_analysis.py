@@ -8,6 +8,31 @@ from tqdm import tqdm
 from cellgrid import capped_distance_array
 from scipy.sparse import csr_matrix
 
+###############################################################################################################################################################
+#                                          when using this program please cite the following references:
+#
+# [1] F. Grunewald, G. Rossi, A. H. de Vries, S. J. Marrink, L. Monticelli, A transferable MARTINI model of polyethylene oxide, in preparation
+#
+# [2] R. J. Gowers, M. Linke, J. Barnoud, T. J. E. Reddy, M. N. Melo, S. L. Seyler, D. L. Dotson, J. Domanski, S. Buchoux, I. M. Kenney, and O. Beckstein. 
+#     MDAnalysis: A Python package for the rapid analysis of molecular dynamics simulations. In S. Benthall and S. Rostrup, editors, Proceedings of the 
+#     15th Python in Science Conference, pages 102-109, Austin, TX, 2016. SciPy.
+#  
+# [3] N. Michaud-Agrawal, E. J. Denning, T. B. Woolf, and O. Beckstein. MDAnalysis: A Toolkit for the Analysis of Molecular Dynamics Simulations. 
+#     J. Comput. Chem. 32 (2011), 2319-2327, doi:10.1002/jcc.21787. PMCID:PMC3144279
+#
+# [4] Pedregosa, Fabian, et al. "Scikit-learn: Machine learning in Python." Journal of machine learning research 12.Oct (2011): 2825-2830
+#
+# [5] Buitinck, Lars, et al. "API design for machine learning software: experiences from the scikit-learn project." arXiv preprint arXiv:1309.0238 (2013).
+#
+#
+##################################################################################################################################################################
+
+print()
+f = open('agg_ref.txt','r')
+pretext = f.read()
+print(pretext)
+f.close()
+
 parser = argparse.ArgumentParser(description='Tool for performing aggregation analysis based on DBSCAN for GROMACS MD-trajectories.')
 parser.add_argument('-s'         , dest = 'tpr_file'   , type = str   , help = 'name of the .tpr file')
 parser.add_argument('-f'         , dest = 'traj_file'  , type = str   , help = 'name of trajectory file (.xtc, .trr, ...)')

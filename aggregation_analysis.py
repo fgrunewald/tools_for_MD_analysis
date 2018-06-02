@@ -27,11 +27,11 @@ from scipy.sparse import csr_matrix
 #
 ##################################################################################################################################################################
 
-print()
-f = open('agg_ref.txt','r')
-pretext = f.read()
-print(pretext)
-f.close()
+#print()
+#f = open('agg_ref.txt','r')
+#pretext = f.read()
+#print(pretext)
+#f.close()
 
 parser = argparse.ArgumentParser(description='Tool for performing aggregation analysis based on DBSCAN for GROMACS MD-trajectories.')
 parser.add_argument('-s'         , dest = 'tpr_file'   , type = str   , help = 'name of the .tpr file')
@@ -56,16 +56,15 @@ class cluster_trajectory:
 
 class cluster_group:
 
-      def __init__(self,time_step, labels, core_labels, selection):
+      def __init__(self,time_step, labels, core_indices, selection):
           self.time_step         = time_step
           self.labels            = labels
-          self.core_labels       = core_labels
-          self.fringe_labels     = np.invert(np.in1d(np.arange(0,selection.indices.shape[0],1),self.core_labels))
-          self.core_atomids      = selection[np.in1d(np.arange(0,selection.indices.shape[0],1),self.core_labels)].indices
-          self.fringe_atomids    = selection[self.fringe_labels].indices
+          self.core_indices      = selection[np.in1d(np.arange(0,len(selection.indices)),core_indices)].indices
+          self.noise_indices     = selection[labels == -1].indices
+          self.fringe_indices    = selection[np.invert(np.in1d(selection.indices,np.concatenate((self.core_indices, self.noise_indices))))].indices
           self.cluster_atomids   = []
           self.n_clusters        = len(set(self.labels)) - (1 if -1 in self.labels else 0)
-                 
+                
           for cluster_index in set(labels):
               if cluster_index != -1:
                  indices = labels == cluster_index
@@ -135,7 +134,7 @@ for ts in tqdm(u.trajectory):
     selection = u.select_atoms(selection_command)
   
     # 2. compute the sparese distance matrix
-   
+    
     if args.fast:
       # !!! The cut-off is not exact but only approximate see: https://github.com/MDAnalysis/cellgrid/issues/12 !!!
       distances = capped_distance_array(selection.positions,selection.positions, args.cut_off, u.dimensions[0:3])
@@ -146,14 +145,13 @@ for ts in tqdm(u.trajectory):
     # 3. perform a DBSCAN based clustering
     db = DBSCAN(eps=args.cut_off, min_samples=args.min_samples, metric='precomputed').fit(dist_matrix)
     labels = db.labels_
-    core_labels = db.core_sample_indices_
- #   print(core_labels.shape) 
-
+    core_indices = db.core_sample_indices_
+ 
     # 4. create cluster_frame obejct
     # !!! This if statement is needed due to a random error occuring when computing the distances 
     #     Sometimes in 1 out of 100 or so a couple of distances are lost for no apparent reason !!!
     if selection.positions.shape[0] == len(labels):
-       traj.add_frame(ts.time, labels, core_labels, selection)
+       traj.add_frame(ts.time, labels, core_indices, selection)
 
 # store the cluster object 
 with open("clustered_traj.pickle", 'wb') as output:
@@ -171,4 +169,10 @@ for frame in traj.frames:
     cluster_file.write('{:<8.6F} {:<8.6F} {}'.format(frame.time_step,float(frame.n_clusters),'\n'))
 cluster_file.close()
 
+print(selection.positions.shape)
 
+print("++++++++++++++++ RESULTS +++++++++++++++++++")
+print("number of clusters last frame: ", traj.frames[-1].n_clusters)
+print("number of core-samples last frame: ", len(traj.frames[-1].core_indices))
+print("number of fringe-samples: ",len(traj.frames[-1].fringe_indices))
+print("number of noise-samples: ", len(traj.frames[-1].noise_indices))

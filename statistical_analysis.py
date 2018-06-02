@@ -83,7 +83,8 @@ def decorr_eq(data):
     return(t0, A_n, g)
 
 def perform_analysis(data_set,eq,minimum,ID,store,time_step):
-    try:        
+    try:      
+         
         if not eq:
            data_uncorr, g = decorr_no_eq(data_set)
            t_eq=0
@@ -122,12 +123,6 @@ def perform_analysis(data_set,eq,minimum,ID,store,time_step):
 #==========================================================================================================================================================================================================
 #                                                                                         Main
 #===========================================================================================================================================================================================================
-
-print()
-f = open('stat_ref.txt','r')
-pretext = f.read()
-print(pretext)
-f.close()
 
 parser = argparse.ArgumentParser(description='Use timeseries analysis to compute error and autocorrelation time \n of data sets from MD simulations.\n')
 parser.add_argument('-f'       , dest='infile'      , metavar='NameData'   , type=str,help='name of the data-file\n')
